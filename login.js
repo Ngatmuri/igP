@@ -1,54 +1,51 @@
-const puppeteer = require('puppeteer');
-const fs = require('fs');
-require('dotenv').config()
+const fs = require('fs').promises;
+require('dotenv').config();
+const puppeteer = require("puppeteer");
 
 
+const test = async () => {
 
-async function main(){
- const browser = await puppeteer.launch({headless:false});
- const page = await browser.newPage();
- const kuki = 'cookiesIG.json';
- const ceksesi = fs.existsSync(kuki);
-      if(ceksesi){
-        const bacakuki = fs.readFileSync(kuki);
-        const parsekuki = JSON.parse(bacakuki);
-        if(bacakuki.length !== 0){
-            for(cookie of parsekuki){
-                await page.setCookie(cookie);
-            }
-            console.log("Berhasil membaca cookie")
+    const browser = await puppeteer.launch({
+        headless: false, //true
+        args: ['--no-sandbox'],
+        slowMo: 20,
+        defaultViewport: {
+            width: 450,
+            height: 630
         }
-    }else{
-        console.log("cookie enggak ada");
-    }
-      // desable gambar.
-      await page.setRequestInterception(true);
-      page.on('request',(request)=>{
-        if(request.resourceType()==='image') request.abort();
-        else request.continue();
-      })
-      await page.setDefaultNavigationTimeout(0);
-      await page.goto('https://instagram.com/');
-      await page.waitForSelector('input', {
+    });
+    const twPage = await browser.newPage();
+    // Configure the navigation timeout
+    await twPage.setDefaultNavigationTimeout(0);
+
+    const url = 'https://www.instagram.com/accounts/login/'
+    await twPage.goto(url);
+
+    await twPage.waitForSelector('input', {
         visible: true
     })
+    await twPage.type('[name="username"]', 'username')
+    await twPage.type('[name="password"]', 'password')
+    console.log('Sedang Masuk....')
+    await twPage.waitForTimeout(10000) // 10 Detik
+    await twPage.click('button[type="submit"]')
 
-     if(await page.$('input[type=password]') !== null){
 
-        await page.type('[name=username]', process.env.username);
-        await page.type('[name=password]', process.env.password);
-        await page.click('button[type=submit]');
-      }
-      await page.waitForTimeout(6000);
+    console.log('menunggu Save Info..',)
+    await twPage.waitForTimeout(10000) // 2m
+    await twPage.click('button[type="button"]')
+    console.log('end--------------')
+    
+    await twPage.waitForTimeout(5000) // 2m
+    const[button] = await twPage.$x("//button[contains(., 'Not Now')]");
+    if(button){await button.click()};
 
-    const cookieOB = await page.cookies();
-    fs.writeFile(kuki, JSON.stringify(cookieOB),function(err){
-             if(err){
-                console.log("Gagal Membuat Cookie");
-             } else{
-                console.log("Cookie Berhasil Dibuat");
-             }
-    })
-      await browser.close();
+
+    const cookies = await twPage.cookies()
+    console.log(cookies);
+    await fs.writeFile('./cookiesIG.json', JSON.stringify(cookies, null, 2))
+    console.log('done------------',)
+    
+    // await browser.close()
 }
-main();
+test();
