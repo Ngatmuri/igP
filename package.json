@@ -1,0 +1,32 @@
+{
+    "name": "Instagram-scraper",
+    "version": "1.0.0",
+    "description": "Scraping Twitter with chrome headless and puppeteer",
+    "main": "get.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ngatmuri/igP"
+    },
+    "author": "Ngatmuri",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ngatmuri"
+    },
+    "homepage": "https://github.com/ngatmuri",
+    "dependencies": {
+        "chunk-date-range": "^0.1.0",
+        "csv-writer": "^1.0.0",
+        "dateformat": "^3.0.3",
+        "dotenv": "^16.3.1",
+        "express": "^4.16.3",
+        "mongodb": "^3.1.13",
+        "mysql2": "^1.5.3",
+        "nodemailer": "^6.4.16",
+        "puppeteer": "^1.18.1",
+        "sequelize": "^6.0.0"
+    }
+}
