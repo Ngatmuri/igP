@@ -33,7 +33,7 @@ const test = async () => {
     await twPage.goto(url);
     const[button] = await twPage.$x("//button[contains(., 'Not Now')]");
     if(button){await button.click()}; //mengeklik Tombol ' Not Now '
-    //while (true) {
+  while (true) {
    try {
     console.log('Beranda terbuka....',)
     
@@ -54,13 +54,13 @@ const test = async () => {
                                                       console.log('Sudah Pernah Di 💖 ..',)
     await twPage.waitForTimeout(1000)
 }
-                                                      console.log('🔃 Refresh & Tutup Halaman.',)
+                                                      console.log('Kembali..',)
     await twPage.goBack();
     await twPage.waitForTimeout(1000)
-                                                      console.log('tutup! ',)
+                                                      console.log('Resfresh ',)
     await twPage.reload()
     await twPage.waitForTimeout(1000)
-    await browser.close();
+  //  await browser.close();
 }
-//}
+}
 test();
